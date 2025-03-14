@@ -269,3 +269,28 @@ footer {
     padding: 10px;
     margin-top: 20px;
 }
+
+
+#message-box {
+    
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+    width: auto; 
+    margin: 20px auto;
+  
+}
+
+.signup-btn: hover{
+    background-color: #45A049;
+    opacity: 1.0;
+}
+
+.signup-btn{
+    color: #4CAF50;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px;
+    opacity: 0.5;
+}
