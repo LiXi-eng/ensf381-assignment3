@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - LMS</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <header>
+        <img src="logo.jpg" alt="LMS Logo" style="width: 100px; height: 100px;">
+        <h1>LMS - Learning Management System</h1>
+    </header>
+    <div>
+        <nav>
+            <a href="index.html">Homepage</a>
+        </nav>
+    </div>
+
+    <main class="login">
+        <h2>Sign Up</h2>
+        <form id="signupForm">
+            <label for="newUsername">Username:</label>
+            <input type="text" id="newUsername" name="newUsername" required>
+
+            <label for="newPassword">Password:</label>
+            <input type="password" id="newPassword" name="newPassword" required>
+
+            <label for="confirmPassword">Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required> <br>
+
+            <button type="submit" class="signup-btn">Sign Up</button>
+        </form>
+
+        
+        <div id="errorBox" style="display: none; border: 1px solid; padding: 10px; margin-top: 10px;"></div>
+        <br>
+        <a href="login.html">Already have an account? Login here</a>
+    </main>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const email = document.getElementById('email').value.trim();
+            const errorBox = document.getElementById('errorBox');
+
+            let errors = [];
+
+            // Validation rules
+            const usernameRegex = /^[A-Za-z][A-Za-z0-9_-]{2,19}$/;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=\[\]{}|;:'",.<>?/`~])[A-Za-z\d!@#$%^&*()\-_=\[\]{}|;:'",.<>?/`~]{8,}$/;
+            const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|io)$/;
+
+            if (!usernameRegex.test(username)) {
+                errors.push("Invalid username (Must be 3-20 characters, start with a letter, and contain only letters, numbers, - or _.)");
+            }
+            if (!passwordRegex.test(password)) {
+                errors.push("Invalid password (Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, one number, and one special character.)");
+            }
+            if (password !== confirmPassword) {
+                errors.push("Passwords do not match.");
+            }
+            if (!emailRegex.test(email)) {
+                errors.push("Invalid email format (Email cannot contain spaces and must contain @)");
+            }
+
+            if (errors.length > 0) {
+                displayMessage(errors.join("<br>"), true);
+                return;
+            }
+
+            // Success message
+            displayMessage("Signup successful! Redirecting to login...", false);
+            setTimeout(() => {
+                window.location.href = "login.html";
+            }, 2000);
+        });
+
+        function displayMessage(message, isError) {
+            const messageBox = document.getElementById("errorBox");
+            messageBox.innerHTML = message;
+            messageBox.style.display = "block";
+           
+        }
+    </script>
+
+    <footer>
+        <p>&copy; 2025 LMS. All rights reserved.</p>
+    </footer>
+</body>
+</html>
