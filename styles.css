@@ -135,9 +135,9 @@ table[class="cv"] td {
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-table[class="cv"] td:hover {
-    background-color: #ffffff; /* (b) Change background to white on hover */
-}
+/*table[class="cv"] td:hover {
+    background-color: #ffffff;  //(b) css version of changing background to white on hover 
+}*/
 
 
 table[class="cv"] td img {

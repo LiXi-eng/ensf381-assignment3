@@ -121,6 +121,35 @@
 
     <script>
     
+
+    window.onload = function(){
+        highlight();
+    };
+
+    function highlight() {
+        var toHighlight = document.getElementsByClassName("cv");
+
+        for (var x = 0; x < toHighlight.length; x++) {
+            var myRows = toHighlight[x].getElementsByTagName("tr");
+
+            for (var y = 0; y < myRows.length; y++) {
+                var squares = myRows[y].getElementsByTagName("td");
+
+                for (var z = 0; z < squares.length; z++) {
+                    var tileToHighlight = squares[z];
+
+                    tileToHighlight.addEventListener("mouseover", function() {
+                        this.style.backgroundColor = "#ffffff";
+                    });
+
+                    tileToHighlight.addEventListener("mouseout", function() {
+                        this.style.backgroundColor = "#e6f2ff";
+                    });
+                }
+            }
+        }
+    }
+    
     function acceptFunction(courseId) {
         var courseDiv = document.getElementById(courseId);
         
@@ -153,13 +182,24 @@
             newRow.appendChild(addTd);
             enrolledTable.appendChild(newRow);
         }
+
+        highlight();
     }
 
 
     function declineFunction(courseId) {
+
         var courseDiv = document.getElementById(courseId);
-        courseDiv.parentElement.removeChild(courseDiv); 
+        courseDiv.parentElement.remove(); 
+
+        var entireTable = document.getElementById("pendingCourses");
+
+        if (entireTable.children.length === 0) {
+            entireTable.parentElement.remove(); 
+        }
+       
     }
+
     </script>
 </body>
 </html>
