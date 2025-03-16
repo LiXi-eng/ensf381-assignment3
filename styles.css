@@ -282,15 +282,22 @@ footer {
   
 }
 
-.signup-btn: hover{
+#errorBox {
+    border: 1px solid;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+button[class="signup-btn"]: hover{
     background-color: #45A049;
     opacity: 1.0;
 }
 
-.signup-btn{
-    color: #4CAF50;
+button[class="signup-btn"]{
+    background-color: #4CAF50;
     padding: 10px;
     border-radius: 5px;
     margin: 10px;
     opacity: 0.5;
 }
+
