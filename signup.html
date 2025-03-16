@@ -19,7 +19,7 @@
 
     <main class="login">
         <h2>Sign Up</h2>
-        <form id="signupForm">
+        <form id="signupForm" onsubmit="return signInfoCheck()">
             <label for="newUsername">Username:</label>
             <input type="text" id="newUsername" name="newUsername" required>
 
@@ -36,54 +36,133 @@
         </form>
 
         
-        <div id="errorBox" style="display: none; border: 1px solid; padding: 10px; margin-top: 10px;"></div>
+        <div id="errorBox" style="display: none;"></div>
         <br>
         <a href="login.html">Already have an account? Login here</a>
     </main>
 
     <script>
-        document.getElementById('signupForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+        function signInfoCheck(){
 
-            const username = document.getElementById('newUsername').value.trim();
+            const username = document.getElementById('newUsername').value;
             const password = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-            const email = document.getElementById('email').value.trim();
+            const email = document.getElementById('email').value;
             const errorBox = document.getElementById('errorBox');
 
             let errors = [];
 
-            // Validation rules
-            const usernameRegex = /^[A-Za-z][A-Za-z0-9_-]{2,19}$/;
-            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=\[\]{}|;:'",.<>?/`~])[A-Za-z\d!@#$%^&*()\-_=\[\]{}|;:'",.<>?/`~]{8,}$/;
-            const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.(com|net|io)$/;
+            // Validation checks
+            function isValidUsername(username) {
+        
+                if (username.length <3 || username.length >20) return false;
 
-            if (!usernameRegex.test(username)) {
+                let firstChar = username[0];
+                if (!((firstChar >= 'A' && firstChar <= 'Z') || (firstChar >= 'a' && firstChar <= 'z'))) return false;   
+
+                for (var i = 1; i < username.length; i++) {
+                    let char = username[i];
+
+                    if (!(
+                    (char >= 'A' && char <= 'Z') ||  
+                    (char >= 'a' && char <= 'z') ||  
+                    (char >= '0' && char <= '9') ||  
+                    char === '-' || char === '_' )) 
+                    {
+                    return false;
+                    }
+                }
+
+                return true;
+            }
+
+            function isValidPassword(password) {
+                let specialCharacters = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/~";
+                
+                if (password.length < 8) return false;
+
+                let hasUpper = false, hasLower = false, hasNumber = false, hasSpecial = false, notHasSpace = true;
+
+                for (let char of password) {
+                    
+                    if (char >= 'A' && char <= 'Z') hasUpper = true;
+                    if (char >= 'a' && char <= 'z') hasLower = true;
+                    if (char >= '0' && char <= '9') hasNumber = true;
+                    if (specialCharacters.includes(char)) hasSpecial = true;
+                    if (char === ' ') notHasSpace = false; 
+                }
+
+                
+                return hasUpper && hasLower && hasNumber && hasSpecial && notHasSpace;
+            }
+
+            function isMatchPassword(password, confirmPassword) {
+                return password === confirmPassword;
+            }
+            
+
+
+            function isValidEmail(email) {
+                if (!email) return false;
+
+                //check space
+                if (email.includes(" ")) return false; 
+
+                //check @
+                let atIndex = email.indexOf("@");
+                if (atIndex < 1) return false; 
+
+                // split the domain before and after @
+                let localPart = email.substring(0, atIndex);
+                let domainPart = email.substring(atIndex + 1);
+
+                //ensure . is not at the begining or end of the domain
+                if (localPart.startsWith(".") || localPart.endsWith(".")) return false;
+                if (localPart.includes("..")) return false;
+
+                // Ensure domain has a dot and valid TLD
+                let dotIndex = domainPart.lastIndexOf(".");
+                if (dotIndex <= 0 || dotIndex === domainPart.length - 1) return false;
+
+                //Extract tld and ensure it's at least 2 characters long
+                let tld = domainPart.substring(dotIndex + 1);
+                if (tld.length < 2) return false; 
+
+                return true;
+            }
+
+
+            if(! isValidUsername(username)){
                 errors.push("Invalid username (Must be 3-20 characters, start with a letter, and contain only letters, numbers, - or _.)");
             }
-            if (!passwordRegex.test(password)) {
+
+            if (! isValidPassword(password)) {
                 errors.push("Invalid password (Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, one number, and one special character.)");
             }
-            if (password !== confirmPassword) {
-                errors.push("Passwords do not match.");
+
+            if (! isMatchPassword(password, confirmPassword)) {
+                errors.push("Password do not match");
             }
-            if (!emailRegex.test(email)) {
+
+            if (! isValidEmail(email)) {
                 errors.push("Invalid email format (Email cannot contain spaces and must contain @)");
             }
 
             if (errors.length > 0) {
-                displayMessage(errors.join("<br>"), true);
-                return;
+                displayMessage(errors.join("<br>"));
+                return false;
             }
 
             // Success message
-            displayMessage("Signup successful! Redirecting to login...", false);
+            displayMessage("Signup successful! Redirecting to login...");
             setTimeout(() => {
                 window.location.href = "login.html";
             }, 2000);
-        });
 
-        function displayMessage(message, isError) {
+            return false;
+        }
+
+        function displayMessage(message) {
             const messageBox = document.getElementById("errorBox");
             messageBox.innerHTML = message;
             messageBox.style.display = "block";
