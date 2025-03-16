@@ -31,14 +31,14 @@
             
             <button type="submit" onclick="fetchData(event)">Login</button>
         <br><br>
-        <a href="#">Forgot Password?</a>
+        <a href="#">Forgot Password?</a> <br>
+        <a href="signup.html">Don't have an account? Sign Up</a>
             
         <div id="message-box" style="display: none;"></div>
     </main>
 
      <script>
         async function fetchData(event){
-            if (event) event.preventDefault();
             
             const username = document.getElementById("username").value;
             const password = document.getElementById("password").value;
@@ -72,7 +72,7 @@
             messageBox.style.display = "block"
         }
 
-        document.getElementById("login-form").addEventListener("submit", fetchData);
+        document.getElementById("login-form");
     </script>
 
 
@@ -81,4 +81,3 @@
     </footer>
 </body>
 </html>
-
