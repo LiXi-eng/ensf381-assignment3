@@ -288,7 +288,7 @@ footer {
     margin-top: 10px;
 }
 
-button[class="signup-btn"]: hover{
+button[class="signup-btn"]:hover{
     background-color: #45A049;
     opacity: 1.0;
 }
